@@ -1,0 +1,14 @@
+# Server (Linux) stores everything as LF. Enforce LF in the repo and working
+# copy so md5 parity between local and server holds on Windows checkouts.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.jks binary
+*.keystore binary

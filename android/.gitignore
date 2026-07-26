@@ -1,0 +1,11 @@
+# Android build + secrets — never commit
+/build/
+/app/build/
+.gradle/
+local.properties
+keystore.properties
+*.jks
+*.keystore
+# stray editor/agent backups
+*.bak-*
+*.bak.*

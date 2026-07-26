@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="用真实经历匹配目标岗位，生成可编辑 Word 与 PDF 简历。">
+  <title>职达简历 · AI 岗位适配</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="manifest" href="static/manifest.webmanifest">
+  <link rel="stylesheet" href="static/styles.css?v=20260726-p0fix-v4">
+  <link rel="stylesheet" href="static/ai-login/auth-login.css?v=20260715-ai-os-v3">
+  <link rel="stylesheet" href="static/global-theme-i18n.css?v=20260722-prelogin-v5">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <main id="auth-view" class="auth-react-host">
+    <div id="auth-react-root"></div>
+    <div id="legacy-auth-content" class="hidden" aria-hidden="true">
+    <section class="auth-story" aria-labelledby="auth-title">
+      <nav class="auth-topbar" aria-label="产品导航">
+        <div class="auth-brand"><div class="brand-mark" aria-hidden="true">职</div><div><strong>职达简历</strong><span>AI 岗位适配工作台</span></div></div>
+        <div class="auth-nav-links" hidden aria-hidden="true"><a href="#features" tabindex="-1">产品功能</a><a href="#pricing" tabindex="-1">定价</a><a href="#help" tabindex="-1">帮助中心</a><a href="#about" tabindex="-1">关于我们</a></div>
+        <div data-ui-preferences></div>
+      </nav>
+      <div class="auth-copy">
+        <p class="auth-chip" data-i18n="auth_subtitle">✦ AI 驱动 · 精准匹配 · 高效求职</p>
+        <h1 id="auth-title" data-i18n="auth_title">让每一份经历，<br>匹配下一份机会。</h1>
+        <p class="auth-lead" data-i18n="auth_lead">基于 AI 岗位分析，优化简历表达，自动生成求职材料，让你的优势被看见，也让机会主动找到你。</p>
+      </div>
+      <div class="auth-metrics" aria-label="产品能力">
+        <div><span>↗</span><strong>98%</strong><small>岗位关键词覆盖</small></div>
+        <div><span>◔</span><strong>10 分钟</strong><small>完成简历优化</small></div>
+        <div><span>▣</span><strong>Word / PDF</strong><small>多种格式一键导出</small></div>
+      </div>
+      <div class="auth-preview-board" aria-hidden="true">
+        <div class="auth-preview-card radar"><strong>岗位分析</strong><i></i><p>能力匹配、关键词、硬性要求</p></div>
+        <div class="auth-preview-card score"><strong>匹配度评分</strong><b>86</b><span>分</span></div>
+        <div class="auth-preview-card advice"><strong>简历优化建议</strong><p>突出项目成果</p><p>补充量化数据</p><p>优化语言表达</p></div>
+      </div>
+    </section>
+
+    <section class="auth-panel" aria-label="账号入口">
+      <div class="segmented" role="tablist" aria-label="登录或注册">
+        <button class="segment active" role="tab" aria-selected="true" data-auth-tab="login" data-i18n="auth_login">登录</button>
+        <button class="segment" role="tab" aria-selected="false" data-auth-tab="register" data-i18n="auth_register">注册</button>
+      </div>
+
+      <form id="login-form" class="stack" data-auth-panel="login">
+        <div class="auth-form-title"><h2 data-i18n="auth_welcome_back">欢迎回来</h2><p data-i18n="auth_login_sub">登录后继续你的简历优化之旅</p></div>
+        <div class="auth-login-methods" role="tablist" aria-label="选择登录方式"><button type="button" class="auth-login-method active" role="tab" aria-selected="true" data-auth-login-mode="password" data-i18n="auth_password">账号密码</button><button type="button" class="auth-login-method" role="tab" aria-selected="false" data-auth-login-mode="sms" data-i18n="auth_sms">手机验证码</button></div>
+        <div data-auth-login-panel="password">
+          <div><label for="login-username" data-i18n="auth_username">用户名</label><div class="auth-field"><span aria-hidden="true">♙</span><input id="login-username" name="username" autocomplete="username" placeholder="请输入用户名" data-i18n-placeholder="auth_username_placeholder" required></div></div>
+          <div class="auth-field-gap"><label for="login-password" data-i18n="auth_password_label">密码</label><div class="password-field auth-field"><span aria-hidden="true">▣</span><input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="请输入密码" data-i18n-placeholder="auth_password_placeholder" required><button class="password-toggle" type="button" data-password-toggle="login-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div>
+          <div class="auth-row"><label class="remember-line"><input type="checkbox"><span data-i18n="auth_remember">记住我</span></label><button class="text-button" type="button" id="show-reset" data-i18n="auth_forgot">忘记密码?</button></div>
+        </div>
+        <div class="hidden" data-auth-login-panel="sms">
+          <div><label for="login-phone" data-i18n="auth_phone">手机号</label><div class="sms-code-row auth-sms-row"><div class="auth-field"><span aria-hidden="true">☎</span><input id="login-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="请输入已绑定手机号" data-i18n-placeholder="auth_phone_placeholder" disabled required></div><button class="button secondary" type="button" data-sms-target="login-phone" data-sms-scene="login" data-i18n="auth_send_code">发送验证码</button></div></div>
+          <div class="auth-field-gap"><label for="login-code" data-i18n="auth_code">短信验证码</label><div class="auth-field"><span aria-hidden="true">✦</span><input id="login-code" name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="请输入验证码" data-i18n-placeholder="auth_code_placeholder" disabled required></div></div>
+          <p class="auth-login-tip" data-i18n="auth_sms_tip">验证码仅用于登录已绑定的账号。</p>
+        </div>
+        <button class="button primary full auth-submit" type="submit" data-i18n="auth_enter">进入工作台 <span aria-hidden="true">→</span></button>
+        <p class="auth-switchline"><span data-i18n="auth_no_account">没有账号，</span><button class="text-button" type="button" data-auth-jump="register" data-i18n="auth_go_register">去注册</button></p>
+        <p class="auth-legal-consent" data-i18n="auth_legal_consent_prefix">
+          登录即代表你已阅读并同意
+          <button type="button" class="auth-legal-link" data-legal="terms" data-i18n="auth_legal_terms">用户服务协议</button>
+          <span class="auth-legal-dot" aria-hidden="true">·</span>
+          <button type="button" class="auth-legal-link" data-legal="privacy" data-i18n="auth_legal_privacy">隐私保护政策</button>
+          <span class="auth-legal-dot" aria-hidden="true">·</span>
+          <button type="button" class="auth-legal-link" data-legal="disclaimer" data-i18n="auth_legal_disclaimer">免责声明</button>
+        </p>
+      </form>
+
+      <form id="register-form" class="stack hidden" data-auth-panel="register">
+        <div class="auth-form-title"><h2 data-i18n="auth_create_account">创建账号</h2><p data-i18n="auth_create_sub">手机号验证后即可开始使用</p></div>
+        <div><label for="register-username">用户名</label><div class="auth-field"><span aria-hidden="true">♙</span><input id="register-username" name="username" minlength="3" maxlength="40" autocomplete="username" placeholder="3 至 40 个字符" required></div></div>
+        <div><label for="register-phone">手机号</label><div class="sms-code-row auth-sms-row"><div class="auth-field"><span aria-hidden="true">☎</span><input id="register-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="请输入手机号" required></div><button class="button secondary" type="button" data-sms-target="register-phone" data-sms-scene="register" data-i18n="auth_send_code">发送验证码</button></div></div>
+        <div><label for="register-code">短信验证码</label><div class="auth-field"><span aria-hidden="true">✦</span><input id="register-code" name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="请输入验证码" required></div></div>
+        <div><label for="register-password">密码</label><div class="password-field auth-field"><span aria-hidden="true">▣</span><input id="register-password" name="password" type="password" minlength="8" autocomplete="new-password" placeholder="至少 8 位密码" data-i18n-placeholder="auth_new_password_placeholder" required><button class="password-toggle" type="button" data-password-toggle="register-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div>
+        <div><label for="register-confirm" data-i18n="auth_confirm_password">确认密码</label><div class="password-field auth-field"><span aria-hidden="true">▣</span><input id="register-confirm" name="confirm_password" type="password" minlength="8" autocomplete="new-password" placeholder="再次输入密码" data-i18n-placeholder="auth_confirm_placeholder" required><button class="password-toggle" type="button" data-password-toggle="register-confirm" aria-label="显示密码" aria-pressed="false">◎</button></div></div>
+        <button class="button primary full auth-submit" type="submit" data-i18n="auth_create_account">创建账号 <span aria-hidden="true">→</span></button>
+      </form>
+
+      <form id="reset-form" class="stack hidden" aria-label="重置密码">
+        <div class="inline-heading"><button class="icon-button" type="button" id="back-login" aria-label="返回登录">←</button><h2 data-i18n="auth_reset">重置密码</h2></div>
+        <p class="muted" data-i18n="auth_reset_sub">通过账号绑定手机号验证身份，再设置一个新的登录密码。</p>
+        <div><label for="reset-phone">手机号</label><div class="sms-code-row auth-sms-row"><div class="auth-field"><span aria-hidden="true">☎</span><input id="reset-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="请输入手机号" required></div><button class="button secondary" type="button" data-sms-target="reset-phone" data-sms-scene="reset_password" data-i18n="auth_send_code">发送验证码</button></div></div>
+        <div><label for="reset-code">短信验证码</label><div class="auth-field"><span aria-hidden="true">✦</span><input id="reset-code" name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="请输入验证码" required></div></div>
+        <div><label for="reset-password" data-i18n="auth_new_password">新密码</label><div class="password-field auth-field"><span aria-hidden="true">▣</span><input id="reset-password" name="new_password" type="password" minlength="8" placeholder="至少 8 位密码" data-i18n-placeholder="auth_new_password_placeholder" required><button class="password-toggle" type="button" data-password-toggle="reset-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div>
+        <div><label for="reset-confirm" data-i18n="auth_confirm_password">确认新密码</label><div class="password-field auth-field"><span aria-hidden="true">▣</span><input id="reset-confirm" name="confirm_password" type="password" minlength="8" placeholder="再次输入密码" data-i18n-placeholder="auth_confirm_placeholder" required><button class="password-toggle" type="button" data-password-toggle="reset-confirm" aria-label="显示密码" aria-pressed="false">◎</button></div></div>
+        <button class="button primary full auth-submit" type="submit" data-i18n="auth_save_password">保存新密码 <span aria-hidden="true">→</span></button>
+      </form>
+      <p id="auth-message" class="form-message" role="status" aria-live="polite"></p>
+      <section id="app-release-card" class="app-release-card app-release-card--compact" aria-label="Android App 下载" aria-live="polite">
+        <div class="app-release-card__head"><span class="app-release-card__icon" aria-hidden="true">↧</span><div class="app-release-card__meta"><strong data-i18n="auth_app_download">Android App 完整安装包</strong><small id="app-release-version" data-i18n="auth_app_reading">正在读取版本…</small></div><a id="app-download-link" class="app-download-link" href="download/full" download data-i18n="auth_app_download_btn">下载</a></div>
+      </section>
+    </section>
+    </div>
+  </main>
+
+  <div id="app-view" class="app-shell hidden">
+    <aside class="sidebar" aria-label="主导航">
+      <div class="sidebar-brand"><div class="brand-mark small" aria-hidden="true">职</div><span>职达简历</span></div>
+      <nav>
+        <p class="nav-section-label" data-i18n="nav_section_workbench">求职工作台</p>
+        <button class="nav-item active" data-page="radar"><span aria-hidden="true">◉</span><span data-i18n="nav_job_radar">岗位雷达</span></button>
+        <button class="nav-item" data-page="resumes"><span aria-hidden="true">▤</span><span data-i18n="nav_resume">简历优化</span></button>
+        <button class="nav-item" data-page="history"><span aria-hidden="true">↺</span><span data-i18n="nav_history">求职记录</span></button>
+        <button class="nav-item" data-page="settings"><span aria-hidden="true">⚙</span><span data-i18n="nav_settings">我的</span></button>
+      </nav>
+      <div class="sidebar-foot"><p id="sidebar-user"></p><button id="credits-chip" class="credits-chip" type="button" data-go="settings"><span data-i18n="nav_credits">额度</span> --</button><button id="logout" class="text-button" data-i18n="nav_logout">退出账号</button></div>
+    </aside>
+
+    <header class="mobile-header"><button id="menu-toggle" class="icon-button" aria-label="打开导航">☰</button><span>职达简历</span><div data-ui-preferences></div><button id="header-credits" class="credits-chip" type="button" data-go="settings"><span data-i18n="nav_remaining">剩余</span> -- <span data-i18n="unit_times">次</span></button></header>
+
+    <main id="main-content" class="workspace" tabindex="-1">
+      <section id="path-onboarding" class="path-onboarding" aria-label="三步完成专属简历">
+        <div class="path-onboarding__copy">
+          <p class="eyebrow" data-i18n="onboard_eyebrow">最短路径</p>
+          <h2 data-i18n="onboard_title">三步做出一份能投的简历</h2>
+          <ol class="path-steps">
+            <li data-onboard-step="1"><strong data-i18n="onboard_step1">1. 准备基础简历</strong><span data-i18n="onboard_step1_desc">上传或在线填写真实经历</span><button class="button secondary" type="button" data-go="resumes" data-i18n="onboard_step1_btn">去准备</button></li>
+            <li data-onboard-step="2"><strong data-i18n="onboard_step2">2. 选目标岗位</strong><span data-i18n="onboard_step2_desc">岗位雷达一键带入，或手动粘贴 JD</span><button class="button secondary" type="button" data-go="radar" data-i18n="onboard_step2_btn">去选岗</button></li>
+            <li data-onboard-step="3"><strong data-i18n="onboard_step3">3. 生成并下载</strong><span data-i18n="onboard_step3_desc">AI 只优化表达，不编造；预览后下载 Word/PDF</span><button class="button secondary" type="button" data-go="history" data-i18n="onboard_step3_btn">看作品</button></li>
+          </ol>
+        </div>
+        <button id="dismiss-onboarding" class="text-button" type="button" data-i18n="onboard_dismiss">知道了，先藏起来</button>
+      </section>
+      <section class="page hidden" data-page-panel="overview">
+        <header class="career-hero">
+          <div>
+            <p class="eyebrow">AI 求职驾驶舱</p>
+            <h1 id="career-greeting">今天准备申请什么岗位？</h1>
+            <p id="career-hero-copy">先建立职业资产，AI 会持续帮你分析方向、发现优势、优化简历。</p>
+          </div>
+          <div class="career-score-card">
+            <span>职业竞争力</span>
+            <strong id="career-score">--</strong>
+            <small id="career-direction">等待建立职业画像</small>
+          </div>
+        </header>
+        <div class="ai-status-grid">
+          <section class="ai-status-card"><span>AI 已完成</span><strong id="ai-done-count">0 项</strong><p>简历分析、能力画像、岗位方向分析会在你建立简历后自动更新。</p></section>
+          <section class="ai-status-card"><span>推荐方向</span><strong id="recommended-roles">暂未生成</strong><p>基于你的经历和历史适配记录动态推荐。</p></section>
+          <section class="ai-status-card"><span>下一步行动</span><strong id="next-action">上传基础简历</strong><p>让 AI 先真正认识你，再生成岗位专属简历。</p></section>
+        </div>
+        <div class="overview-grid">
+          <section class="workflow-panel"><h2>职业画像</h2><div id="career-profile" class="career-profile empty-state"><strong>暂无职业画像</strong><p>上传或填写基础简历后，AI 会自动沉淀你的职业资产。</p></div></section>
+          <section class="activity-panel"><div class="section-title"><h2>AI 简历作品中心</h2><button class="text-button" data-go="history">查看全部</button></div><div id="overview-history" class="empty-state"><strong>还没有生成记录</strong><p>完成第一次岗位适配后，记录会出现在这里。</p></div></section>
+        </div>
+        <section class="radar-overview-cta"><div><p class="eyebrow">职达岗位雷达</p><h2>找到适合的岗位，再生成专属简历</h2><p>岗位推荐、简历定制与投递反馈在同一个求职闭环里完成。</p></div><button class="button primary" data-go="radar">查看推荐岗位</button></section>
+      </section>
+
+      <section class="page active" data-page-panel="radar">
+        <header class="page-header radar-page-header"><div><p class="eyebrow">职达岗位雷达</p><h1>为你筛出的广西岗位</h1><p><span data-i18n="radar_desc">系统结合你的基础简历、职业方向和反馈持续调整推荐。点击岗位后，可直接生成该岗位专属简历。</span></p></div><button id="refresh-radar" class="button secondary" type="button" data-i18n="btn_refresh">刷新推荐</button></header>
+        <div class="radar-metrics" aria-label="岗位雷达概览">
+          <section><span>可推荐岗位</span><strong id="radar-available-count">--</strong><small>已通过岗位库有效性筛查</small></section>
+          <button id="radar-saved-filter" class="radar-metric-button" type="button" aria-pressed="false"><span>已收藏</span><strong id="radar-saved-count">0</strong><small>点击查看已收藏岗位</small></button>
+          <section><span>已记录投递</span><strong id="radar-applied-count">0</strong><small>该岗位将不再重复推荐</small></section>
+        </div>
+        <section class="radar-guidance"><strong>怎么用</strong><p>默认按与你简历的匹配度排序。搜关键词、选城市/时间/薪资即可缩小范围；“不感兴趣 / 已投递”会静默优化后续推荐。</p></section>
+        <div class="radar-mobile-filterbar">
+          <button id="radar-filter-toggle" class="radar-filter-toggle" type="button" aria-expanded="false" aria-controls="radar-filter-form">
+            <span class="radar-filter-toggle__label">筛选</span>
+            <span id="radar-filter-summary" class="radar-filter-summary">全部城市 · 近 30 天 · 匹配度</span>
+            <span class="radar-filter-chevron" aria-hidden="true">⌄</span>
+          </button>
+        </div>
+        <form id="radar-filter-form" class="radar-filters" autocomplete="off">
+          <label class="radar-search"><span>搜索</span><input id="radar-query" type="search" placeholder="岗位、公司，例如：产品经理" enterkeyhint="search"></label>
+          <label><span>城市</span><select id="radar-city"><option value="">全部城市</option></select></label>
+          <label><span>时间</span><select id="radar-published-within"><option value="all">近 30 天</option><option value="7d">近 7 天</option><option value="3d">近 3 天</option><option value="1d">近 1 天</option></select></label>
+          <label><span>薪资</span><select id="radar-salary-min"><option value="0">不限薪资</option><option value="5000">5k+</option><option value="8000">8k+</option><option value="10000">10k+</option><option value="15000">15k+</option><option value="20000">20k+</option></select></label>
+          <label><span>经验</span><select id="radar-experience"><option value="">不限</option></select></label>
+          <label><span>学历</span><select id="radar-education"><option value="">不限</option></select></label>
+          <label><span>方向</span><select id="radar-topic"><option value="">全部方向</option></select></label>
+          <label><span>来源</span><select id="radar-source"><option value="">全部来源</option></select></label>
+          <label class="radar-new-toggle"><span>岗位状态</span><span class="radar-toggle-field"><input id="radar-new-filter" type="checkbox"><span>只看新发布</span><small id="radar-new-count">近 24 小时发布</small></span></label>
+          <fieldset class="radar-resume-picker">
+            <legend>推荐依据</legend>
+            <div id="radar-resume-options" class="radar-resume-options" aria-live="polite"></div>
+            <small id="radar-resume-summary">使用默认简历推荐；可最多合并 3 份简历。</small>
+          </fieldset>
+          <label><span>排序</span><select id="radar-sort"><option value="match">匹配优先</option><option value="latest">最新发布</option><option value="salary">薪资从高到低</option></select></label>
+          <div class="radar-filter-actions">
+            <button class="button primary" type="submit">查看结果</button>
+            <button class="button secondary" type="button" id="radar-filter-reset">清空</button>
+          </div>
+        </form>
+        <p id="radar-result-count" class="radar-result-count" aria-live="polite"></p>
+        <div id="radar-list" class="radar-list" aria-live="polite"><div class="empty-state"><strong>正在读取岗位雷达</strong><p>首次使用会根据你的基础简历建立推荐。</p></div></div>
+        <nav id="radar-pagination" class="radar-pagination" aria-label="岗位推荐分页"></nav>
+      </section>
+
+      <section class="page" data-page-panel="resumes">
+        <header class="page-header"><div><p class="eyebrow">简历优化</p><h1><span data-i18n="resume_opt_title">用一份基础简历，生成多份岗位专属版本</span></h1><p><span data-i18n="resume_opt_desc">先保存真实经历，再从岗位雷达带入岗位；AI 只优化表达，不会编造事实。</span></p></div><button class="button primary" type="button" data-go="match" data-i18n="btn_manual_match">手动适配岗位</button></header>
+        <div class="method-tabs" role="tablist" aria-label="创建简历方式">
+          <button class="method active" data-resume-method="editor" data-i18n="tab_online_fill">在线填写</button><button class="method" data-resume-method="document" data-i18n="tab_upload_doc">上传文档</button><button class="method" data-resume-method="image" data-i18n="tab_ocr_snap">截图识别</button>
+        </div>
+        <section class="creation-panel" data-resume-panel="editor">
+          <div id="resume-editor-collapsed" class="resume-editor-collapsed">
+            <div><strong><span data-i18n="fill_profile_title">在线填写职业资料</span></strong><p><span data-i18n="fill_profile_desc">适合从零创建简历。先保持页面清爽，点击后再展开姓名、经历、项目等完整字段。</span></p></div>
+            <button id="resume-editor-expand" class="button primary" type="button" data-i18n="btn_start_fill">开始填写</button>
+          </div>
+          <form id="resume-form" class="editor-grid hidden" aria-hidden="true">
+            <div class="field-span"><label for="resume-version-name">版本名称</label><input id="resume-version-name" name="version_name" placeholder="例如：产品经理主简历" required></div>
+            <div><label for="resume-name">姓名</label><input id="resume-name" name="name"></div><div><label for="resume-age">年龄</label><input id="resume-age" name="age" inputmode="numeric" placeholder="例如：32"></div>
+            <div class="field-span"><label for="resume-title">当前职位或求职方向</label><input id="resume-title" name="title"></div>
+            <div><label for="resume-phone">电话</label><input id="resume-phone" name="phone" inputmode="tel"></div><div><label for="resume-email">邮箱</label><input id="resume-email" name="email" type="email"></div>
+            <div class="field-span avatar-field"><label for="resume-avatar">个人照片（可选）</label><input id="resume-avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp"><small id="avatar-selection-note">支持 JPG、PNG、WebP。选择后可自主裁剪，也可保留原图；导出时始终保持原始比例。</small></div>
+            <div class="field-span"><label for="resume-summary">个人概述</label><textarea id="resume-summary" name="summary" rows="4" placeholder="简要说明你的经验、优势和方向"></textarea></div>
+            <div class="field-span"><label for="resume-skills">经验与能力</label><textarea id="resume-skills" name="skills" rows="3" placeholder="用一两句话说明与目标岗位最相关的经验和能力"></textarea></div>
+            <div class="field-span"><label for="resume-experience">工作经历</label><textarea id="resume-experience" name="experience" rows="6" placeholder="按时间写下公司、岗位、职责和成果"></textarea></div>
+            <div class="field-span"><label for="resume-projects">项目经历</label><textarea id="resume-projects" name="projects" rows="5" placeholder="按项目写下背景、职责与结果"></textarea></div>
+            <div><label for="resume-education">教育经历</label><textarea id="resume-education" name="education" rows="4"></textarea></div><div><label for="resume-certificates">证书</label><textarea id="resume-certificates" name="certificates" rows="4" placeholder="每行一项"></textarea></div>
+            <div class="field-span form-actions"><button class="button primary" type="submit">保存到简历库</button><button class="button secondary hidden" type="button" id="cancel-edit">取消编辑</button></div>
+          </form>
+        </section>
+        <section class="creation-panel hidden" data-resume-panel="document"><form id="document-form" class="upload-zone"><label for="resume-document"><strong>选择 PDF 或 DOCX 简历</strong><span>最大 15MB，上传后自动提取并结构化</span></label><input id="resume-document" name="file" type="file" accept=".pdf,.docx,.txt" required><button class="button primary" type="submit">上传并解析</button></form></section>
+        <section class="creation-panel hidden" data-resume-panel="image"><form id="resume-image-form" class="upload-zone"><label for="resume-image"><strong>选择简历截图</strong><span>支持 PNG、JPG、WebP，清晰完整的长图识别更准确</span></label><input id="resume-image" name="file" type="file" accept="image/png,image/jpeg,image/webp" required><button class="button primary" type="submit">上传并识别</button></form></section>
+        <div class="section-title resume-list-title"><h2><span data-i18n="saved_resumes_title">已保存的简历</span></h2><span id="resume-count" class="pill">0 份</span></div><div id="resume-list" class="resource-list"></div>
+      </section>
+
+      <section class="page" data-page-panel="match">
+        <header class="page-header"><div><p class="eyebrow">核心流程</p><h1>岗位适配</h1><p>提交岗位要求，确认解析结果，再生成忠于事实的定制简历。</p></div></header>
+        <div class="match-layout">
+          <section class="match-input"><div class="section-title"><h2>1. 选择基础简历</h2><span class="required-label">必选</span></div><select id="match-resume" aria-label="选择基础简历"><option value="">使用默认简历</option></select>
+            <fieldset class="design-picker"><legend>简历模板</legend><p>从 8 套系统版式中挑选。每套对应真实不同的栏位结构（左栏/顶栏/时间轴/双栏/极简等），预览与最终 Word/PDF 使用同一渲染引擎。</p><select id="design-theme" class="visually-hidden" aria-label="选择 PDF 视觉风格"><option value="auto">AI 自动匹配</option></select><div id="design-theme-preview" class="design-theme-preview" aria-live="polite"></div><button id="open-template-picker" class="button secondary template-picker-trigger" type="button">浏览系统版式模板</button><small>点「真实预览」查看该版式结构。每次生成消耗 1 次额度，失败自动退回。</small></fieldset>
+          <fieldset class="design-picker"><legend>简历语言</legend><p>外企、跨境或出海岗位建议生成英文或中英双语版本。</p><label for="generation-language">输出语言</label><select id="generation-language"><option value="zh">中文（默认）</option><option value="en">英文简历 (English CV)</option><option value="bilingual">中英双语</option></select></fieldset>
+            <div class="section-title spacing-top"><h2>2. 提交岗位描述</h2></div>
+            <div class="method-tabs compact" role="tablist" aria-label="岗位描述提交方式"><button id="jd-tab-text" class="method active" role="tab" aria-selected="true" aria-controls="jd-text-form" data-jd-method="text">粘贴文本</button><button id="jd-tab-url" class="method" role="tab" aria-selected="false" aria-controls="jd-url-form" data-jd-method="url">岗位链接</button><button id="jd-tab-image" class="method" role="tab" aria-selected="false" aria-controls="jd-image-form" data-jd-method="image">岗位截图</button></div>
+            <form id="jd-text-form" role="tabpanel" aria-labelledby="jd-tab-text" data-jd-panel="text"><label for="jd-text">岗位描述</label><textarea id="jd-text" rows="12" placeholder="粘贴完整的职位职责与任职要求，至少 20 个字符" required></textarea><button class="button secondary" type="submit">解析岗位要求</button></form>
+            <form id="jd-url-form" class="hidden" role="tabpanel" aria-labelledby="jd-tab-url" aria-hidden="true" data-jd-panel="url"><label for="jd-url">公开岗位链接</label><input id="jd-url" type="url" placeholder="https://" required><small>广西人才网等复杂页面会优先读取职位正文，通常几秒内完成。</small><button class="button secondary" type="submit">抓取并解析</button></form>
+            <form id="jd-image-form" class="hidden" role="tabpanel" aria-labelledby="jd-tab-image" aria-hidden="true" data-jd-panel="image"><label for="jd-image">岗位截图</label><input id="jd-image" name="files" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="jd-image-help jd-image-feedback" multiple required><small id="jd-image-help">最多 10 张，请按页面从上到下选择；单张不超过 15MB，合计不超过 30MB。</small><p id="jd-image-feedback" class="file-selection-summary" role="status" aria-live="polite">尚未选择图片</p><ol id="jd-image-list" class="selected-file-list"></ol><button id="jd-image-submit" class="button secondary" type="submit" disabled>上传并识别</button></form>
+          </section>
+          <section class="match-result" aria-live="polite"><div class="section-title"><h2>3. AI岗位洞察</h2><span id="jd-status" class="status waiting">等待提交</span></div><div id="jd-preview" class="empty-state tall"><strong>岗位结构化结果将在这里显示</strong><p>生成前可检查职位名称、职责、要求和关键词。</p></div><details class="highlight-questionnaire"><summary>补充真实亮点（可选，让简历更有竞争力）</summary><p class="muted">只填你确实做过、能解释的事实；AI 会原样融入、绝不夸大。</p><label>这段经历最值得量化的结果？<textarea id="hl-result" rows="2" maxlength="200" placeholder="例如：把接口耗时从 800ms 降到 120ms，QPS 提升 3 倍"></textarea></label><label>你解决过什么棘手问题？<textarea id="hl-problem" rows="2" maxlength="200" placeholder="例如：线上频发 OOM，定位到线程池泄漏并修复，故障率归零"></textarea></label><label>你比同类候选人强在哪？<textarea id="hl-edge" rows="2" maxlength="200" placeholder="例如：同时懂业务与数据，能独立从 0 搭建分析体系"></textarea></label></details>
+<button id="generate-button" class="button primary full" disabled>生成竞争版简历</button><p class="safe-copy">提交后会在后台生成，可以离开页面，完成后到“AI简历作品中心”下载。</p></section>
+        </div>
+        <section class="data-section jd-task-history"><div class="section-title"><div><p class="eyebrow">不会丢失结果</p><h2>岗位解析记录</h2></div><button id="refresh-jd-history" class="button secondary" type="button">刷新记录</button></div><div id="jd-history-list" class="jd-history-list"></div></section>
+      </section>
+
+      <section class="page" data-page-panel="history">
+        <header class="page-header"><div><p class="eyebrow">求职记录</p><h1>统一管理你的求职进度</h1><p>简历作品、岗位解析、投递进度和经历确认都集中在这里，完成一项再进入下一项。</p></div></header>
+        <nav class="record-tabs" aria-label="求职记录分类">
+          <button class="record-tab active" type="button" data-go="history">简历作品</button>
+          <button class="record-tab" type="button" data-go="match">岗位解析</button>
+          <button class="record-tab" type="button" data-go="applications">投递进度</button>
+          <button class="record-tab" type="button" data-go="career">经历确认</button>
+        </nav>
+        <div id="history-list" class="history-list"></div>
+      </section>
+
+      <section class="page" data-page-panel="career">
+        <header class="page-header"><div><p class="eyebrow">求职记录 · 经历确认</p><h1>确认经历，再让 AI 放大优势</h1><p>先沉淀可追溯的真实经历，再逐条确认 AI 给出的岗位表达建议。</p></div></header>
+        <nav class="record-tabs" aria-label="求职记录分类">
+          <button class="record-tab" type="button" data-go="history">简历作品</button>
+          <button class="record-tab" type="button" data-go="match">岗位解析</button>
+          <button class="record-tab" type="button" data-go="applications">投递进度</button>
+          <button class="record-tab active" type="button" data-go="career">经历确认</button>
+        </nav>
+        <div class="match-layout commercialization-layout">
+          <section class="match-input"><div class="section-title"><h2>职业事实库</h2><button id="rebuild-career-facts" class="button secondary" type="button">从简历重建</button></div><p class="muted">只保留你确认过的事实，避免生成内容夸大或失真。</p><div id="career-facts-list" class="resource-list"></div></section>
+          <section class="match-result"><div class="section-title"><h2>岗位审阅</h2><button id="create-review" class="button primary" type="button">基于当前岗位创建审阅</button></div><p class="muted">需先在“岗位适配”中解析一个岗位。建议逐条接受或拒绝，确认后再用于生成。</p><div id="review-list" class="review-list"></div></section>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="applications">
+        <header class="page-header"><div><p class="eyebrow">求职记录 · 投递进度</p><h1>把每一次投递推进到底</h1><p>把职位、投递状态和下一步安排放在一处，减少重复查找和遗漏跟进。</p></div></header>
+        <nav class="record-tabs" aria-label="求职记录分类">
+          <button class="record-tab" type="button" data-go="history">简历作品</button>
+          <button class="record-tab" type="button" data-go="match">岗位解析</button>
+          <button class="record-tab active" type="button" data-go="applications">投递进度</button>
+          <button class="record-tab" type="button" data-go="career">经历确认</button>
+        </nav>
+        <div class="match-layout commercialization-layout">
+          <section class="match-input"><div class="section-title"><h2>新增投递</h2></div><form id="application-form" class="editor-grid compact-form"><div><label for="application-title">岗位名称</label><input id="application-title" name="job_title" required></div><div><label for="application-company">公司</label><input id="application-company" name="company"></div><div class="field-span"><label for="application-url">岗位链接（可选）</label><input id="application-url" name="source_url" type="url"></div><div><label for="application-status">当前状态</label><select id="application-status" name="status"><option value="saved">待投递</option><option value="applied">已投递</option><option value="interview">面试中</option><option value="offer">已获 Offer</option><option value="rejected">未通过</option><option value="closed">已结束</option></select></div><div><label for="application-next-action">下次跟进</label><input id="application-next-action" name="next_action_at" type="date"></div><div class="field-span"><label for="application-note">备注</label><textarea id="application-note" name="note" rows="3" placeholder="例如：一周后跟进招聘进度"></textarea></div><div class="field-span form-actions"><button class="button primary" type="submit">保存投递记录</button></div></form></section>
+          <section class="match-result"><div class="section-title"><h2>我的投递</h2><button id="refresh-applications" class="button secondary" type="button">刷新</button></div><div id="applications-list" class="resource-list"></div></section>
+        </div>
+<p class="muted applications-billing-hint">生成额度请到「我的 → 我的额度」查看；每次生成消耗 1 次，失败自动退回。</p>
+      </section>
+
+      <section class="page" data-page-panel="settings">
+        <header class="page-header"><div><p class="eyebrow">个人中心</p><h1>账号与安全</h1><p>查看账号信息，需要时再修改安全设置。</p></div></header>
+        <section class="account-summary" aria-labelledby="account-summary-title">
+          <div class="account-avatar" id="account-avatar" aria-hidden="true">用</div>
+          <div class="account-identity"><span>当前账号</span><h2 id="account-summary-title"><span id="account-username">用户</span></h2><p>绑定手机：<strong id="current-phone">未绑定</strong></p></div>
+          <div class="account-actions"><input id="account-avatar-input" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp"><button id="account-avatar-button" class="button secondary" type="button">设置账号头像</button><button class="button secondary" type="button" data-dialog-open="password-dialog">修改密码</button><button class="button secondary" type="button" data-dialog-open="phone-dialog">更换手机号</button></div>
+        </section>
+        <p class="security-note"><span aria-hidden="true">✓</span> 手机号仅用于账号验证与找回密码，不会显示在公开简历中。</p>
+        <section class="data-section billing-section settings-billing"><div class="section-title"><div><p class="eyebrow">套餐与额度</p><h2>我的额度</h2></div><span id="billing-credit" class="pill">-- 次</span></div><div id="billing-plans" class="billing-plans"></div><p id="billing-provider-note" class="muted"></p></section>
+        <section class="danger-zone"><div><h2>注销账号</h2><p>永久删除账号，以及简历、头像、岗位解析和生成文件。此操作无法恢复。</p></div><button class="button danger" type="button" data-dialog-open="delete-account-dialog">注销账号</button></section>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="password-dialog" class="settings-dialog" aria-labelledby="password-dialog-title">
+    <form id="password-form" class="settings-form" method="dialog"><div class="dialog-heading"><div><p class="eyebrow">账号安全</p><h2 id="password-dialog-title">修改密码</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="关闭">×</button></div><div><label for="current-password">当前密码</label><div class="password-field"><input id="current-password" name="current_password" type="password" autocomplete="current-password" required><button class="password-toggle" type="button" data-password-toggle="current-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div><div><label for="new-password">新密码</label><div class="password-field"><input id="new-password" name="new_password" type="password" minlength="8" autocomplete="new-password" required><button class="password-toggle" type="button" data-password-toggle="new-password" aria-label="显示密码" aria-pressed="false">◎</button></div><small>至少 8 个字符</small></div><div class="dialog-actions"><button class="button secondary" type="button" data-dialog-close>取消</button><button class="button primary" type="submit">保存新密码</button></div></form>
+  </dialog>
+  <dialog id="phone-dialog" class="settings-dialog" aria-labelledby="phone-dialog-title">
+    <form id="phone-form" class="settings-form" method="dialog"><div class="dialog-heading"><div><p class="eyebrow">账号安全</p><h2 id="phone-dialog-title">更换手机号</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="关闭">×</button></div><p class="muted">验证码将发送到新的手机号。</p><div><label for="new-phone">新手机号</label><div class="sms-code-row"><input id="new-phone" name="phone" inputmode="tel" autocomplete="tel" required><button class="button secondary" type="button" data-sms-target="new-phone" data-sms-scene="change_phone">发送验证码</button></div></div><div><label for="phone-code">短信验证码</label><input id="phone-code" name="code" inputmode="numeric" autocomplete="one-time-code" required></div><div class="dialog-actions"><button class="button secondary" type="button" data-dialog-close>取消</button><button class="button primary" type="submit">确认更换</button></div></form>
+  </dialog>
+  <dialog id="delete-account-dialog" class="settings-dialog" aria-labelledby="delete-account-title">
+    <form id="delete-account-form" class="settings-form" method="dialog"><div class="dialog-heading"><div><p class="eyebrow danger-text">不可恢复</p><h2 id="delete-account-title">确认注销账号</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="关闭">×</button></div><p class="delete-warning">注销后，账号及所有关联数据会立即永久删除，无法找回。</p><div><label for="delete-confirm-username">输入当前用户名确认</label><input id="delete-confirm-username" name="confirm_username" autocomplete="off" required></div><div><label for="delete-current-password">当前密码</label><div class="password-field"><input id="delete-current-password" name="current_password" type="password" autocomplete="current-password" required><button class="password-toggle" type="button" data-password-toggle="delete-current-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div><label class="confirm-check"><input id="delete-understood" type="checkbox" required>我明白所有数据将被永久删除</label><div class="dialog-actions"><button class="button secondary" type="button" data-dialog-close>取消</button><button class="button danger" type="submit">永久注销</button></div></form>
+  </dialog>
+  <dialog id="avatar-crop-dialog" class="settings-dialog crop-dialog" aria-labelledby="avatar-crop-title">
+    <div class="settings-form"><div class="dialog-heading"><div><p class="eyebrow">头像处理</p><h2 id="avatar-crop-title">调整头像</h2></div><button class="icon-button" type="button" data-avatar-choice="cancel" aria-label="关闭">×</button></div><p class="muted">拖动滑块调整取景；如果原图已经合适，直接选择“保留原图”。</p><canvas id="avatar-crop-canvas" class="avatar-crop-canvas" width="640" height="640" aria-label="头像裁剪预览"></canvas><div class="crop-controls"><label for="avatar-zoom">缩放<input id="avatar-zoom" type="range" min="1" max="3" step="0.01" value="1"></label><label for="avatar-x">水平位置<input id="avatar-x" type="range" min="-100" max="100" step="1" value="0"></label><label for="avatar-y">垂直位置<input id="avatar-y" type="range" min="-100" max="100" step="1" value="0"></label></div><div class="dialog-actions"><button class="button secondary" type="button" data-avatar-choice="original">保留原图</button><button class="button primary" type="button" data-avatar-choice="crop">使用正方形裁剪</button></div></div>
+  </dialog>
+  <dialog id="resume-preview-dialog" class="preview-dialog" aria-labelledby="resume-preview-title">
+    <div class="preview-dialog__heading"><div><p class="eyebrow">生成文件</p><h2 id="resume-preview-title">在线预览</h2></div><button class="icon-button" type="button" data-preview-close aria-label="关闭">×</button></div><div id="resume-preview-content" class="preview-dialog__body" aria-live="polite"></div>
+  </dialog>
+  <dialog id="regenerate-dialog" class="settings-dialog" aria-labelledby="regenerate-title">
+    <form id="regenerate-form" class="settings-form" method="dialog"><div class="dialog-heading"><div><p class="eyebrow">保留旧版本</p><h2 id="regenerate-title">更换模板重新生成</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="关闭">×</button></div><p class="muted">会生成一条新记录，当前版本不会被覆盖，方便预览对比后再下载。</p><input id="regenerate-id" type="hidden"><div><label for="regenerate-theme">选择 PDF 模板风格</label><select id="regenerate-theme" required><option value="auto">AI 自动匹配</option><option value="tech_indigo">技术专业</option><option value="operations_terra">工程运营</option><option value="executive_navy">稳重商务</option><option value="care_teal">教育医疗</option><option value="creative_plum">品牌创意</option><option value="ats_mono">打印友好</option></select></div><div class="dialog-actions"><button class="button secondary" type="button" data-dialog-close>取消</button><button class="button primary" type="submit">生成新版本</button></div></form>
+  </dialog>
+  <dialog id="template-dialog" class="template-dialog" aria-labelledby="template-dialog-title">
+    <div class="template-dialog__heading"><div><p class="eyebrow">授权模板中心</p><h2 id="template-dialog-title">选择简历模板</h2><p>原始 Word 可真实预览；生成时保留模板的配色、结构与密度。</p></div><button class="icon-button" type="button" data-template-close aria-label="关闭">×</button></div>
+    <div class="template-toolbar"><input id="template-search" type="search" placeholder="搜索行业、风格或关键词"><select id="template-category"><option value="">全部分类</option></select></div>
+    <div id="template-list" class="template-list" aria-live="polite"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading-overlay hidden" aria-live="assertive"><div class="loader"></div><strong id="loading-text">正在处理</strong><span id="loading-detail">请稍候，不要关闭页面</span></div>
+  <script src="static/ui-preferences.js?v=20260721" defer></script>
+  <script type="module" src="static/ai-login/auth-login.js?v=20260715-ai-os-v3"></script>
+  <script src="static/app.js?v=20260726-p0fix-v4" defer></script>
+  <script src="static/global-theme-i18n.js?v=20260725-resume-i18n-v1"></script>
+  <script src="static/legal-modal.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>文件预览</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; color: #172033; background: #f2f4f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #f2f4f8; }
+    .bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 16px; background: #fbfcff; border-bottom: 1px solid #e2e7ef; }
+    .bar strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .95rem; }
+    .bar span { margin-left: auto; color: #667085; font-size: .78rem; }
+    #content { min-height: calc(100dvh - 56px); padding: 14px 8px 28px; overflow-x: hidden; }
+    .loading, .error, .text-page, .file-card { max-width: 760px; margin: 72px auto; padding: 24px; background: #fbfcff; border: 1px solid #e2e7ef; border-radius: 16px; line-height: 1.65; }
+    .loading, .error, .file-card { text-align: center; }
+    .loader { width: 28px; height: 28px; margin: 0 auto 14px; border: 3px solid #dfe7f8; border-top-color: #3457e8; border-radius: 999px; animation: spin .8s linear infinite; }
+    .error strong { color: #b42318; }
+    .pdf-page { width: fit-content; max-width: 100%; margin: 0 auto 16px; overflow: hidden; background: #fff; box-shadow: 0 3px 16px rgba(21, 31, 54, .12); }
+    .pdf-page canvas { display: block; max-width: 100%; height: auto !important; }
+    .pdf-page figcaption { padding: 8px 10px; color: #667085; background: #fbfcff; border-top: 1px solid #e2e7ef; font-size: .75rem; text-align: center; }
+    .docx-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 0 !important; background: transparent !important; overflow: hidden; }
+    .docx-wrapper > section.docx { flex: none; max-width: none !important; margin: 0 !important; box-shadow: 0 3px 16px rgba(21, 31, 54, .12) !important; transform-origin: top center; }
+    .image-preview { display: block; max-width: 100%; height: auto; margin: 0 auto; background: #fff; border: 1px solid #e2e7ef; border-radius: 12px; box-shadow: 0 3px 16px rgba(21, 31, 54, .12); }
+    .text-page { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 16px; font-size: .92rem; text-align: left; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 640px) { .bar { padding-inline: 12px; } #content { padding: 10px 4px 22px; } .loading, .error, .text-page, .file-card { margin: 32px 8px; padding: 18px; } }
+  </style>
+</head>
+<body>
+  <header class="bar"><strong id="title">正在打开文件</strong><span id="format"></span></header>
+  <main id="content"><div class="loading"><div class="loader"></div><strong>正在读取真实文件</strong><br>请稍候片刻</div></main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const fileUrl = params.get("file");
+    const rawType = params.get("type");
+    const type = ["docx", "pdf", "image", "text", "file"].includes(rawType) ? rawType : "pdf";
+    const title = params.get("title") || "文件预览";
+    const content = document.getElementById("content");
+    document.getElementById("title").textContent = title;
+    document.getElementById("format").textContent = ({ docx: "Word", pdf: "PDF", image: "图片", text: "文本", file: "文件" })[type];
+
+    function showError(message) {
+      content.replaceChildren();
+      const section = document.createElement("section");
+      section.className = "error";
+      const heading = document.createElement("strong");
+      heading.textContent = "预览暂时打不开";
+      const detail = document.createElement("p");
+      detail.textContent = message || "请检查网络后重试。";
+      section.append(heading, detail);
+      content.appendChild(section);
+    }
+    function fitDocx() {
+      const available = Math.max(280, content.clientWidth - 12);
+      document.querySelectorAll(".docx-wrapper > section.docx").forEach((page) => {
+        page.style.transform = "";
+        page.style.marginBottom = "";
+        const width = Math.max(page.scrollWidth, page.getBoundingClientRect().width);
+        const scale = Math.min(1, available / width);
+        page.style.transform = `scale(${scale})`;
+        page.style.marginBottom = `${Math.max(16, Math.round(page.offsetHeight * (scale - 1) + 16))}px`;
+      });
+    }
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("预览组件加载失败"));
+        document.head.appendChild(script);
+      });
+    }
+    async function loadDocx(buffer) {
+      await loadScript("./vendor/jszip.min.js");
+      await loadScript("./vendor/docx-preview.min.js");
+      content.replaceChildren();
+      const host = document.createElement("div");
+      host.className = "docx-wrapper";
+      content.appendChild(host);
+      await window.docx.renderAsync(buffer, host, null, { className: "docx", inWrapper: true, breakPages: true, experimental: true, ignoreLastRenderedPageBreak: false, renderHeaders: true, renderFooters: true });
+      fitDocx();
+      addEventListener("resize", fitDocx, { passive: true });
+    }
+    async function loadPdf(buffer) {
+      if (!Promise.withResolvers) Promise.withResolvers = () => { let resolve; let reject; const promise = new Promise((r, j) => { resolve = r; reject = j; }); return { promise, resolve, reject }; };
+      const pdfjs = await import("./vendor/pdf.min.mjs");
+      pdfjs.GlobalWorkerOptions.workerSrc = "./vendor/pdf.worker.compat.mjs";
+      const pdf = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
+      content.replaceChildren();
+      const available = Math.max(280, content.clientWidth - 12);
+      for (let number = 1; number <= pdf.numPages; number += 1) {
+        const page = await pdf.getPage(number);
+        const base = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: Math.min(1.45, available / base.width) });
+        const ratio = Math.min(devicePixelRatio || 1, 2);
+        const figure = document.createElement("figure");
+        figure.className = "pdf-page";
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.ceil(viewport.width * ratio);
+        canvas.height = Math.ceil(viewport.height * ratio);
+        canvas.style.width = `${Math.round(viewport.width)}px`;
+        canvas.style.height = `${Math.round(viewport.height)}px`;
+        const caption = document.createElement("figcaption");
+        caption.textContent = `第 ${number} / ${pdf.numPages} 页`;
+        figure.append(canvas, caption);
+        content.appendChild(figure);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport, transform: ratio === 1 ? null : [ratio, 0, 0, ratio, 0, 0] }).promise;
+      }
+    }
+    async function loadImage(buffer, mime) {
+      const url = URL.createObjectURL(new Blob([buffer], { type: mime || "image/jpeg" }));
+      const image = new Image();
+      image.className = "image-preview";
+      image.onload = () => URL.revokeObjectURL(url);
+      image.src = url;
+      content.replaceChildren(image);
+    }
+    async function loadText(buffer) {
+      const section = document.createElement("section");
+      section.className = "text-page";
+      section.textContent = new TextDecoder("utf-8").decode(buffer);
+      content.replaceChildren(section);
+    }
+    (async () => {
+      if (!fileUrl) throw new Error("缺少文件地址");
+      const response = await fetch(fileUrl);
+      if (!response.ok) throw new Error(`文件读取失败（${response.status}）`);
+      const mime = response.headers.get("content-type") || "";
+      const buffer = await response.arrayBuffer();
+      if (type === "docx") await loadDocx(buffer);
+      else if (type === "pdf") await loadPdf(buffer);
+      else if (type === "image") await loadImage(buffer, mime);
+      else if (type === "text") await loadText(buffer);
+      else showError("这个格式暂不支持在线预览，请返回记录页下载后打开。");
+    })().catch((error) => showError(error?.message));
+  </script>
+</body>
+</html>

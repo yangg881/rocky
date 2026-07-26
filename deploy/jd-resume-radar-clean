@@ -1,0 +1,2 @@
+# Read-only by default. Any write requires an explicit --apply during a reviewed maintenance window.
+0 2 * * * root cd /opt/jd-resume-ai && /opt/jd-resume-ai/.venv/bin/python scripts/verify_active_job_links.py --concurrency 8 >> /var/log/jd-resume-radar-clean.log 2>&1; /opt/jd-resume-ai/.venv/bin/python scripts/clean_job_radar.py >> /var/log/jd-resume-radar-clean.log 2>&1; /opt/jd-resume-ai/.venv/bin/python scripts/radar_health_check.py >> /var/log/jd-resume-radar-health.log 2>&1

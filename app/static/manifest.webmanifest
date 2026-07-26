@@ -1,0 +1,11 @@
+{
+  "name": "职达简历 · AI 岗位专属简历",
+  "short_name": "职达简历",
+  "description": "用真实经历匹配目标岗位，生成可编辑 Word 与 PDF 简历，并带岗位雷达与投递管理。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#284C9B",
+  "lang": "zh-CN",
+  "icons": []
+}

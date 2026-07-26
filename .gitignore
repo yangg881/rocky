@@ -1,0 +1,45 @@
+# === Secrets — never commit ===
+.env
+.env.bak*
+.env.pre-*
+keystore.properties
+*.jks
+*.keystore
+
+# === Python ===
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# === Node / frontend build ===
+node_modules/
+dist/
+
+# === Local runtime data & artifacts (not source) ===
+data/
+output/
+tmp/
+artifacts/
+test-results/
+*.log
+*.sqlite3
+
+# === Android build ===
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+
+# === Deploy / agent backups & scratch ===
+.deploy-backups/
+.codex-upload/
+.impeccable/
+.playwright-cli/
+.workbuddy/
+.job-radar-*/
+*.bak-*
+*.bak.*
+*.upload.tmp
+server_radar_sources.py
