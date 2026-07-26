@@ -1254,9 +1254,9 @@ def app_version(
     apk_path = STATIC_DIR / "downloads" / "zhiday-resume-android.apk"
     # Bump together with a newly published APK under static/downloads.
     # Keep this value in lockstep with android/app/build.gradle.kts and the APK below.
-    latest_code = 34
+    latest_code = 35
     minimum_code = 5
-    latest_name = "1.8.19"
+    latest_name = "1.8.20"
     # CRITICAL: many mobile carriers RST HTTPS to zhidajob.top, while HTTP to
     # the server IP works. Always advertise the HTTP/IP download first so old
     # and new clients can actually fetch the installer.
@@ -1285,6 +1285,8 @@ def app_version(
         "package_type": "full_installer",
         "size": apk_path.stat().st_size if apk_path.is_file() else None,
         "release_notes": [
+            "【安全升级】改用正式发布证书签名，修复旧版调试证书带来的升级劫持风险；若安装提示“应用未安装/签名冲突”，请先卸载旧版再安装本版",
+            "应用内更新增加安装包签名指纹校验，杜绝被下发伪造安装包",
             "修复岗位来源筛选：Android 应用与网页端现在都会正确按来源刷新岗位列表",
             "修复 1.8.13 业务接口“像断网”：API 主入口改回手机可达的 IP 路径",
             "接口失败自动切换备用地址（IP / 域名）",

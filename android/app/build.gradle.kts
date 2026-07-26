@@ -28,8 +28,8 @@ android {
         applicationId = "com.zhiday.resume"
         minSdk = 26
         targetSdk = 35
-        versionCode = 34
-        versionName = "1.8.19"
+        versionCode = 35
+        versionName = "1.8.20"
         // P0-6: HTTPS domain is the primary channel; the plaintext IP is only a
         // fallback used when domain resolution fails (see network_security_config).
         buildConfigField("String", "API_BASE_URL", "\"https://zhidajob.top/api/\"")
