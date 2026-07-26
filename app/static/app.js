@@ -198,7 +198,12 @@
       version.textContent = `v${release.latest_version_name || "最新版"}`;
       // 网页版面向未安装 App 的新用户，优先用完整版安装包链接；
       // 回退到 download_url（App 内更新同款完整包）。
-      const installerUrl = release.installer_url || release.download_url;
+      // installer_url/download_url 是 HTTP+IP（利于 App 内更新，运营商会 RST HTTPS）；
+      // 但 HTTPS 页面下载 HTTP 链接会被浏览器当混合内容拦截，故在 HTTPS 下优先选同协议链接。
+      const urls = Array.isArray(release.download_urls) ? release.download_urls : [];
+      const onHttps = window.location.protocol === "https:";
+      const httpsUrl = onHttps ? urls.find((u) => typeof u === "string" && u.startsWith("https://")) : null;
+      const installerUrl = httpsUrl || release.installer_url || release.download_url;
       if (installerUrl) link.href = installerUrl;
       link.textContent = "下载";
     } catch {

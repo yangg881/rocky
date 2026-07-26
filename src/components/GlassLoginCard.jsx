@@ -46,6 +46,18 @@ export default function GlassLoginCard() {
 
   const update = (key) => (value) => setValues((current) => ({ ...current, [key]: value }));
   const phoneScene = useMemo(() => mode === "register" ? "register" : mode === "reset" ? "reset_password" : "login", [mode]);
+  // The /app/version download_url is HTTP+IP (best for the Android in-app updater,
+  // which carriers RST over HTTPS). But a browser on an HTTPS page blocks an HTTP
+  // download as mixed content, so on HTTPS pick a same-protocol URL instead.
+  const appDownloadUrl = useMemo(() => {
+    const onHttps = typeof window !== "undefined" && window.location.protocol === "https:";
+    const urls = release?.download_urls || [];
+    if (onHttps) {
+      const https = urls.find((u) => typeof u === "string" && u.startsWith("https://"));
+      if (https) return https;
+    }
+    return release?.download_url || urls[0] || "download/android-full.apk";
+  }, [release]);
   const showMessage = (text, type = "error") => { setMessage(text); setMessageType(type); };
   const changeMode = (next) => { setMode(next); setMessage(""); setLoginMethod("password"); };
 
@@ -105,7 +117,7 @@ export default function GlassLoginCard() {
           {mode === "reset" && <p className="ai-switch-copy"><button type="button" onClick={() => changeMode("login")}>返回登录</button></p>}
           <p className={`ai-form-message ${messageType === "success" ? "is-success" : ""}`} aria-live="polite">{message}</p>
         </motion.form></AnimatePresence>
-        <a className="ai-app-download" href={release?.download_url || "download/android-full.apk"} download><span><Smartphone size={18} /><b>Android App 完整安装包</b><small>{release?.latest_version_name ? `v${release.latest_version_name}` : "最新版本"}</small></span><em>下载</em></a>
+        <a className="ai-app-download" href={appDownloadUrl} download><span><Smartphone size={18} /><b>Android App 完整安装包</b><small>{release?.latest_version_name ? `v${release.latest_version_name}` : "最新版本"}</small></span><em>下载</em></a>
       </div>
     </motion.section>
   );
