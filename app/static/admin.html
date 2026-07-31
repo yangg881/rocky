@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title data-i18n="admin_page_title">职达简历 · 管理后台</title><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="static/styles.css?v=20260715-order-fix">  <link rel="stylesheet" href="static/global-theme-i18n.css">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title data-i18n="admin_page_title">职达简历 · 管理后台</title><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="static/styles.css?v=20260715-order-fix">  <link rel="stylesheet" href="static/ui-prefs.css?v=20260801">
 </head>
 <body class="admin-body"><a class="skip-link" href="#admin-main">跳到主要内容</a>
   <main id="admin-login-view" class="admin-login"><section><div class="brand-mark" aria-hidden="true">职</div><p class="eyebrow" data-i18n="admin_subtitle">独立管理后台</p><h1 data-i18n="admin_title">系统运维控制台</h1><p data-i18n="admin_sub">用户、生成记录、模型调用与对象存储状态集中管理。</p><form id="admin-login-form" class="stack"><div><label for="admin-username" data-i18n="admin_username">管理员账号</label><input id="admin-username" autocomplete="username" required></div><div><label for="admin-password" data-i18n="auth_password_label">密码</label><div class="password-field"><input id="admin-password" type="password" autocomplete="current-password" required><button class="password-toggle" type="button" data-password-toggle="admin-password" aria-label="显示密码" aria-pressed="false">◎</button></div></div><button class="button primary full" type="submit" data-i18n="admin_login">登录后台</button></form><p id="admin-login-message" class="form-message" role="status"></p><a class="admin-link" href="./" data-i18n="admin_back_user">返回用户端</a><div data-ui-preferences style="margin-top:18px;justify-content:center"></div></section></main>
@@ -16,7 +16,6 @@
     </main>
   </div><dialog id="admin-preview-dialog" class="preview-dialog" aria-labelledby="admin-preview-title">
     <div class="preview-dialog__heading"><div><p class="eyebrow">生成文件</p><h2 id="admin-preview-title">在线预览</h2></div><button class="icon-button" type="button" data-admin-preview-close aria-label="关闭">×</button></div><div id="admin-preview-content" class="preview-dialog__body" aria-live="polite"></div>
-  </dialog><div id="toast" class="toast" role="status"></div><script src="static/ui-preferences.js?v=20260721" defer></script>
+  </dialog><div id="toast" class="toast" role="status"></div><script src="static/ui-prefs.js?v=20260801"></script>
 <script src="static/admin.js?v=20260715-order-fix" defer></script>
-  <script src="static/global-theme-i18n.js"></script>
 </body></html>

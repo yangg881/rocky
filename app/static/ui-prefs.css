@@ -1,0 +1,1081 @@
+/* ============================================================
+   职达简历 · Premium Theme System (Deep Midnight Indigo)
+   Dark & Light themes + Embedded preference controls
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   语义 Token 层（新 ui-prefs 系统）
+   业务代码统一引用语义 token；主题切换只改 data-theme。
+   auto 模式由 ui-prefs.js 解析为 dark/light 后落到 data-theme，
+   因此这里仍按 [data-theme] 定义两套取值。
+   ------------------------------------------------------------ */
+:root {
+  --bg-page:     #0a0e17;   /* 页面底 */
+  --bg-card:     #111624;   /* 卡片/容器底 */
+  --bg-raised:   #182031;   /* 悬浮/输入底 */
+  --ink-1:       #edf1fa;   /* 主文本 */
+  --ink-2:       #bfc9dd;   /* 次文本 */
+  --ink-muted:   #8793ac;   /* 弱文本/占位 */
+  --line-1:      #222c42;   /* 细分割线 */
+  --line-2:      #2f3b58;   /* 强分割线 */
+  --accent-1:    #6e8efb;   /* 强调色 */
+  --accent-hover:#8ca6fc;   /* 强调 hover */
+  --accent-soft: rgba(110, 142, 251, 0.14);
+  --success:     #22C55E;   /* 成功/正面 */
+  --danger:      #f0879a;   /* 错误/危险 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-1: 0 18px 50px rgba(3, 6, 16, 0.55);
+}
+:root[data-theme="light"] {
+  --bg-page:     #f0f4f9;
+  --bg-card:     #ffffff;
+  --bg-raised:   #f1f5f9;
+  --ink-1:       #0f172a;
+  --ink-2:       #334155;
+  --ink-muted:   #64748b;
+  --line-1:      #e2e8f0;
+  --line-2:      #cbd5e1;
+  --accent-1:    #4c6ef5;
+  --accent-hover:#3b5bdb;
+  --accent-soft: #e7ecfd;
+  --success:     #16a34a;
+  --danger:      #dc2626;
+  --shadow-1: 0 16px 50px rgba(15, 23, 42, 0.08);
+}
+
+/* 主题切换平滑过渡（遵循 prefers-reduced-motion） */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.24s ease, color 0.24s ease,
+              border-color 0.24s ease, box-shadow 0.24s ease,
+              fill 0.24s ease, stroke 0.24s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: none !important;
+  }
+}
+
+/* --- SIDEBAR & BRAND LAYOUT PROTECTION (prevent vertical squeezing) ---
+   Without these, an injected width:100% control group can collapse the
+   brand/nav text into one-character-per-line vertical stacking. */
+.sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  box-sizing: border-box !important;
+}
+
+.sidebar-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  flex-direction: row !important;
+}
+
+.sidebar nav {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+}
+
+.nav-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  flex-direction: row !important;
+}
+
+/* --- DARK MODE (Default) · Deep Midnight Indigo --- */
+:root[data-theme="dark"], body[data-theme="dark"] {
+  color-scheme: dark !important;
+  --ink: #edf1fa !important;
+  --ink-soft: #bfc9dd !important;
+  --muted: #8793ac !important;
+  --line: #222c42 !important;
+  --line-strong: #2f3b58 !important;
+  --surface: #0a0e17 !important;
+  --surface-soft: #111624 !important;
+  --surface-raised: #182031 !important;
+  --accent: #6e8efb !important;
+  --accent-hover: #8ca6fc !important;
+  --accent-soft: rgba(110, 142, 251, 0.14) !important;
+  --shadow: 0 18px 50px rgba(3, 6, 16, 0.55) !important;
+}
+
+/* Dark Mode Overrides for React Auth Landing & Workspace */
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] #auth-view,
+:root[data-theme="dark"] #app-view,
+:root[data-theme="dark"] .ai-login-shell,
+:root[data-theme="dark"] .workspace,
+:root[data-theme="dark"] .auth-layout,
+:root[data-theme="dark"] .page,
+:root[data-theme="dark"] main,
+:root[data-theme="dark"] .career-hero {
+  background-color: #0a0e17 !important;
+  color: #edf1fa !important;
+}
+
+/* Soft ambient glow at the top for depth (premium feel) */
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(1100px 520px at 50% -180px, rgba(110, 142, 251, 0.10), transparent 65%) !important;
+  background-attachment: fixed !important;
+}
+
+:root[data-theme="dark"] .ai-glass-login,
+:root[data-theme="dark"] .ai-glass-login-inner,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .ai-status-card,
+:root[data-theme="dark"] .career-score-card,
+:root[data-theme="dark"] .sidebar,
+:root[data-theme="dark"] .mobile-header,
+:root[data-theme="dark"] .modal-content,
+:root[data-theme="dark"] table,
+:root[data-theme="dark"] .admin-card,
+:root[data-theme="dark"] .radar-job,
+:root[data-theme="dark"] .radar-summary,
+:root[data-theme="dark"] .resume-card,
+:root[data-theme="dark"] .section-card {
+  background-color: #111624 !important;
+  color: #edf1fa !important;
+  border: 1px solid #222c42 !important;
+  box-shadow: 0 12px 40px rgba(3, 6, 16, 0.42) !important;
+}
+
+:root[data-theme="dark"] .ai-auth-tabs,
+:root[data-theme="dark"] .ai-login-methods {
+  background: #182031 !important;
+  border: 1px solid #2f3b58 !important;
+}
+
+:root[data-theme="dark"] .ai-auth-tabs button,
+:root[data-theme="dark"] .ai-login-methods button {
+  color: #8793ac !important;
+}
+
+:root[data-theme="dark"] .ai-auth-tabs button.is-active,
+:root[data-theme="dark"] .ai-login-methods button.is-active {
+  background: #232e47 !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .ai-input-wrap {
+  background: #182031 !important;
+  border: 1px solid #2f3b58 !important;
+}
+
+:root[data-theme="dark"] .ai-input-wrap input {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .ai-input-wrap input::placeholder {
+  color: #8793ac !important;
+}
+
+:root[data-theme="dark"] .ai-form-heading h2,
+:root[data-theme="dark"] .ai-form-heading p,
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] strong {
+  color: #edf1fa !important;
+}
+
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] span,
+:root[data-theme="dark"] small,
+:root[data-theme="dark"] label {
+  color: #bfc9dd !important;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background-color: #182031 !important;
+  color: #edf1fa !important;
+  border: 1px solid #2f3b58 !important;
+}
+
+:root[data-theme="dark"] .ai-app-download {
+  background: #182031 !important;
+  border-color: #2f3b58 !important;
+  color: #edf1fa !important;
+}
+
+:root[data-theme="dark"] .ai-app-download small {
+  color: #8793ac !important;
+}
+
+/* ============================================================
+   DARK MODE · React Auth Landing Page — comprehensive overrides
+   auth-login.css hardcodes a light palette, so every surface and
+   text color on the landing hero / mockup must be remapped here
+   for a coherent Deep Midnight Indigo dark experience.
+   ============================================================ */
+
+/* Page backdrop & ambient decoration */
+:root[data-theme="dark"] .ai-background {
+  background: linear-gradient(138deg, #0a0e17, #0d1424 52%, #0a1020) !important;
+}
+:root[data-theme="dark"] .ai-aurora--one {
+  background: radial-gradient(ellipse at center, rgba(110, 142, 251, 0.16) 0%, rgba(110, 142, 251, 0.05) 46%, transparent 71%) !important;
+}
+:root[data-theme="dark"] .ai-aurora--two {
+  background: radial-gradient(ellipse at center, rgba(124, 110, 251, 0.14) 0%, rgba(90, 120, 251, 0.05) 42%, transparent 70%) !important;
+}
+:root[data-theme="dark"] .ai-aurora--three {
+  background: radial-gradient(ellipse at center, rgba(95, 140, 231, 0.10), transparent 68%) !important;
+}
+:root[data-theme="dark"] .ai-spatial-grid {
+  background-image: linear-gradient(rgba(110, 142, 251, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(110, 142, 251, 0.06) 1px, transparent 1px) !important;
+}
+
+/* Brand & hero copy */
+:root[data-theme="dark"] .ai-brand strong { color: #edf1fa !important; }
+:root[data-theme="dark"] .ai-brand small { color: #8793ac !important; }
+:root[data-theme="dark"] .ai-system-signal { color: #8ca6fc !important; }
+:root[data-theme="dark"] .ai-hero h1 { color: #edf1fa !important; }
+:root[data-theme="dark"] .ai-hero-lead { color: #bfc9dd !important; }
+
+/* Stat cards */
+:root[data-theme="dark"] .ai-stat {
+  background: rgba(17, 22, 36, 0.72) !important;
+  border: 1px solid #222c42 !important;
+  box-shadow: 0 14px 36px rgba(3, 6, 16, 0.4) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+}
+:root[data-theme="dark"] .ai-stat strong { color: #8ca6fc !important; }
+:root[data-theme="dark"] .ai-stat span { color: #8793ac !important; }
+:root[data-theme="dark"] .ai-stat svg { color: #6e8efb !important; }
+
+/* Resume mockup card */
+:root[data-theme="dark"] .ai-resume-card {
+  background: linear-gradient(135deg, rgba(24, 32, 49, 0.92), rgba(17, 22, 36, 0.85)) !important;
+  border: 1px solid rgba(110, 142, 251, 0.22) !important;
+  box-shadow: 0 30px 70px rgba(3, 6, 16, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme="dark"] .ai-resume-header { color: #bfc9dd !important; }
+:root[data-theme="dark"] .ai-resume-person b { background: #2f3b58 !important; }
+:root[data-theme="dark"] .ai-resume-person b:nth-child(1) { background: #3d4d70 !important; }
+:root[data-theme="dark"] .ai-resume-lines i {
+  background-image: linear-gradient(90deg, #2a3550 68%, transparent 68%) !important;
+}
+:root[data-theme="dark"] .ai-skill-list span {
+  color: #a5b8fc !important;
+  background: rgba(24, 32, 49, 0.85) !important;
+  border: 1px solid rgba(110, 142, 251, 0.3) !important;
+}
+:root[data-theme="dark"] .ai-match-gauge span { color: #8793ac !important; }
+:root[data-theme="dark"] .ai-gauge-track { stroke: rgba(110, 142, 251, 0.2) !important; }
+
+/* Floating status bubble */
+:root[data-theme="dark"] .ai-status {
+  background: rgba(17, 22, 36, 0.85) !important;
+  border: 1px solid #222c42 !important;
+  box-shadow: 0 16px 38px rgba(3, 6, 16, 0.5) !important;
+}
+:root[data-theme="dark"] .ai-status-copy strong { color: #edf1fa !important; }
+:root[data-theme="dark"] .ai-status-copy p { color: #8793ac !important; }
+
+/* Glass login card refinement (depth over flat solid) */
+:root[data-theme="dark"] .ai-glass-login {
+  background: rgba(17, 22, 36, 0.6) !important;
+  border: 1px solid rgba(110, 142, 251, 0.18) !important;
+  box-shadow: 0 35px 90px rgba(3, 6, 16, 0.55), inset 0 2px 1px rgba(255, 255, 255, 0.04) !important;
+}
+:root[data-theme="dark"] .ai-glass-login-inner {
+  background: linear-gradient(145deg, rgba(24, 32, 49, 0.92), rgba(17, 22, 36, 0.96)) !important;
+}
+
+/* Active tab — React uses .active (not .is-active) */
+:root[data-theme="dark"] .ai-auth-tabs button.active,
+:root[data-theme="dark"] .ai-login-methods button.active {
+  background: #232e47 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(3, 6, 16, 0.4) !important;
+}
+:root[data-theme="dark"] .ai-auth-tabs button:hover,
+:root[data-theme="dark"] .ai-login-methods button:hover { color: #a5b8fc !important; }
+
+/* Form micro-elements */
+:root[data-theme="dark"] .ai-checkbox { color: #bfc9dd !important; }
+:root[data-theme="dark"] .ai-remember-row > button,
+:root[data-theme="dark"] .ai-switch-copy button { color: #8ca6fc !important; }
+:root[data-theme="dark"] .ai-switch-copy { color: #8793ac !important; }
+:root[data-theme="dark"] .ai-eye { color: #8793ac !important; }
+:root[data-theme="dark"] .ai-eye:hover { color: #a5b8fc !important; background: rgba(110, 142, 251, 0.12) !important; }
+:root[data-theme="dark"] .ai-code-row button {
+  color: #8ca6fc !important;
+  background: rgba(24, 32, 49, 0.85) !important;
+  border: 1px solid rgba(110, 142, 251, 0.3) !important;
+}
+:root[data-theme="dark"] .ai-form-message { color: #f0879a !important; }
+:root[data-theme="dark"] .ai-form-message.is-success { color: #4ade80 !important; }
+
+/* App download row */
+:root[data-theme="dark"] .ai-app-download b { color: #edf1fa !important; }
+:root[data-theme="dark"] .ai-app-download svg { color: #8ca6fc !important; }
+:root[data-theme="dark"] .ai-app-download em { color: #8ca6fc !important; border-color: #6e8efb !important; }
+:root[data-theme="dark"] .ai-app-download:hover {
+  background: rgba(24, 32, 49, 0.9) !important;
+  border-color: #6e8efb !important;
+}
+
+/* --- LIGHT MODE --- */
+:root[data-theme="light"], body[data-theme="light"] {
+  color-scheme: light !important;
+  --ink: #0f172a !important;
+  --ink-soft: #334155 !important;
+  --muted: #64748b !important;
+  --line: #e2e8f0 !important;
+  --line-strong: #cbd5e1 !important;
+  --surface: #f8fafc !important;
+  --surface-soft: #f1f5f9 !important;
+  --surface-raised: #ffffff !important;
+  --accent: #4c6ef5 !important;
+  --accent-hover: #3b5bdb !important;
+  --accent-soft: #e7ecfd !important;
+  --shadow: 0 16px 50px rgba(15, 23, 42, 0.08) !important;
+}
+
+:root[data-theme="light"] body,
+:root[data-theme="light"] #auth-view,
+:root[data-theme="light"] #app-view,
+:root[data-theme="light"] .ai-login-shell,
+:root[data-theme="light"] .workspace,
+:root[data-theme="light"] .auth-layout,
+:root[data-theme="light"] .page,
+:root[data-theme="light"] main,
+:root[data-theme="light"] .career-hero {
+  background-color: #f0f4f9 !important;
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] .ai-glass-login,
+:root[data-theme="light"] .ai-glass-login-inner,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .ai-status-card,
+:root[data-theme="light"] .career-score-card,
+:root[data-theme="light"] .sidebar,
+:root[data-theme="light"] .mobile-header,
+:root[data-theme="light"] .modal-content,
+:root[data-theme="light"] table,
+:root[data-theme="light"] .admin-card,
+:root[data-theme="light"] .radar-job,
+:root[data-theme="light"] .radar-summary,
+:root[data-theme="light"] .resume-card,
+:root[data-theme="light"] .section-card {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08) !important;
+}
+
+:root[data-theme="light"] .ai-auth-tabs,
+:root[data-theme="light"] .ai-login-methods {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+:root[data-theme="light"] .ai-auth-tabs button,
+:root[data-theme="light"] .ai-login-methods button {
+  color: #64748b !important;
+}
+
+:root[data-theme="light"] .ai-auth-tabs button.is-active,
+:root[data-theme="light"] .ai-login-methods button.is-active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+:root[data-theme="light"] .ai-input-wrap {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+:root[data-theme="light"] .ai-input-wrap input {
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] .ai-input-wrap input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:root[data-theme="light"] .ai-form-heading h2,
+:root[data-theme="light"] .ai-form-heading p,
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] strong {
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] p,
+:root[data-theme="light"] span,
+:root[data-theme="light"] small,
+:root[data-theme="light"] label {
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] input,
+:root[data-theme="light"] select,
+:root[data-theme="light"] textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+:root[data-theme="light"] .ai-app-download {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* ============================================================
+   EMBEDDED PREFERENCE CONTROLS (theme + language switches)
+   Premium glass-pill design
+   ============================================================ */
+.zhida-embedded-pref-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-left: auto !important;
+  padding: 4px !important;
+  border-radius: 999px !important;
+}
+
+.zhida-embedded-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 7px 14px !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 999px !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+/* Dark mode embedded button — subtle glass with indigo glow on hover */
+:root[data-theme="dark"] .zhida-embedded-btn {
+  background: rgba(148, 163, 184, 0.10) !important;
+  color: #c7d2e8 !important;
+  border: 1px solid rgba(148, 163, 184, 0.20) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+:root[data-theme="dark"] .zhida-embedded-btn:hover {
+  background: rgba(110, 142, 251, 0.20) !important;
+  color: #ffffff !important;
+  border-color: rgba(110, 142, 251, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(110, 142, 251, 0.14), 0 4px 16px rgba(110, 142, 251, 0.22) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Light mode embedded button */
+:root[data-theme="light"] .zhida-embedded-btn {
+  background: rgba(15, 23, 42, 0.05) !important;
+  color: #334155 !important;
+  border: 1px solid rgba(15, 23, 42, 0.13) !important;
+}
+
+:root[data-theme="light"] .zhida-embedded-btn:hover {
+  background: #4c6ef5 !important;
+  color: #ffffff !important;
+  border-color: #4c6ef5 !important;
+  box-shadow: 0 4px 14px rgba(76, 110, 245, 0.30) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* --- LOGIN PAGE TOP-RIGHT CORNER CONTROLS ---
+   The theme/language toggles are appended to #auth-view (a stable, non-React node)
+   and fixed to the viewport's top-right corner, clear of the brand (top-left) and
+   the glass login card. #auth-view is hidden once logged in, so these only show
+   on the login/landing page. */
+.auth-corner-pref {
+  position: fixed !important;
+  top: 22px !important;
+  right: 26px !important;
+  z-index: 50 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 620px) {
+  .auth-corner-pref {
+    top: 14px !important;
+    right: 14px !important;
+    gap: 6px !important;
+  }
+  .auth-corner-pref .zhida-embedded-btn {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* --- SIDEBAR FOOTER PREFERENCE ROW ---
+   The theme/language toggles are injected into .sidebar-foot as a
+   full-width row of two equal buttons, separated from the account
+   block above by a subtle top border. */
+.sidebar-pref-row {
+  display: flex !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 12px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-sizing: border-box !important;
+}
+
+:root[data-theme="light"] .sidebar-pref-row {
+  border-top-color: rgba(15, 23, 42, 0.10) !important;
+}
+
+.sidebar-pref-row .zhida-embedded-btn {
+  flex: 1 !important;
+  justify-content: center !important;
+  padding: 7px 4px !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+}
+
+
+/* ============================================================
+   GLOBAL LEGAL FOOTER — 3-Layer Structure (Brand / Nav / Compliance)
+   ============================================================ */
+
+.zhida-global-footer {
+  width: 100%;
+  padding: 12px 24px 10px;
+  margin-top: 24px;
+  background: var(--surface-soft, rgba(15, 23, 42, 0.6));
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+  color: var(--muted, #94a3b8);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.zhida-footer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- Brand strip --- */
+.zhida-footer-brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px 10px;
+  max-width: 100%;
+}
+
+.zhida-footer-brand-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink, #edf1fa);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.zhida-footer-copy {
+  font-size: 11px;
+  color: var(--muted, #8793ac);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.zhida-footer-brand-tag {
+  font-size: 11px;
+  color: var(--muted, #8793ac);
+  white-space: nowrap;
+}
+
+/* --- Navigation links --- */
+.zhida-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  row-gap: 4px;
+}
+
+.zhida-footer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--ink-soft, #cbd5e1);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+  min-height: 26px;
+  white-space: nowrap;
+}
+
+.zhida-footer-btn:hover {
+  color: var(--accent, #38bdf8);
+  background: var(--accent-soft, rgba(56, 189, 248, 0.1));
+}
+
+.zhida-footer-dot {
+  color: var(--line-strong, #475569);
+  font-size: 10px;
+  user-select: none;
+}
+
+/* --- Compliance bar --- */
+/* --- LEGAL CONSENT TEXT (in login form) --- */
+.auth-legal-consent {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--muted, #8793ac);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.auth-legal-link {
+  background: transparent;
+  border: none;
+  padding: 0 2px;
+  color: var(--ink-soft, #cbd5e1);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: color 0.18s ease;
+}
+
+.auth-legal-link:hover {
+  color: var(--accent, #8ca6fc);
+  text-decoration: underline;
+}
+
+.auth-legal-dot {
+  color: var(--line-strong, #475569);
+  margin: 0 1px;
+  user-select: none;
+}
+
+:root[data-theme="dark"] .auth-legal-consent {
+  color: #8793ac;
+}
+:root[data-theme="dark"] .auth-legal-link {
+  color: #bfc9dd;
+}
+:root[data-theme="dark"] .auth-legal-link:hover {
+  color: #8ca6fc;
+}
+
+:root[data-theme="light"] .auth-legal-consent {
+  color: #64748b;
+}
+:root[data-theme="light"] .auth-legal-link {
+  color: #475569;
+}
+:root[data-theme="light"] .auth-legal-link:hover {
+  color: #4c6ef5;
+}
+
+@media (max-width: 620px) {
+  .auth-legal-consent {
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 0 4px;
+  }
+}
+
+.zhida-beian-link {
+  color: var(--accent, #38bdf8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-size: 12px;
+}
+
+.zhida-beian-link:hover {
+  text-decoration: underline;
+  color: var(--accent-hover, #7dd3fc);
+}
+
+/* --- Mobile adaptations (< 620px) --- */
+@media (max-width: 620px) {
+  .zhida-global-footer {
+    padding: 14px 16px 12px;
+    margin-top: 20px;
+    font-size: 11px;
+  }
+
+  .zhida-footer-inner {
+    gap: 10px;
+  }
+
+  .zhida-footer-brand-name {
+    font-size: 13px;
+  }
+
+  .zhida-footer-brand-tag {
+    font-size: 10px;
+  }
+
+  .zhida-footer-copy {
+    font-size: 10px;
+  }
+
+  /* Stack legal buttons vertically for easy tapping */
+  .zhida-footer-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .zhida-footer-btn {
+    min-height: 32px;
+    padding: 4px 14px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .zhida-footer-dot {
+    display: none;
+  }
+
+}
+
+/* --- Dark mode overrides --- */
+:root[data-theme="dark"] .zhida-global-footer {
+  background: rgba(10, 14, 23, 0.7);
+  border-top-color: rgba(110, 142, 251, 0.12);
+}
+
+:root[data-theme="dark"] .zhida-footer-brand-name {
+  color: #edf1fa;
+}
+
+:root[data-theme="dark"] .zhida-footer-brand-tag {
+  color: #8793ac;
+}
+
+:root[data-theme="dark"] .zhida-footer-copy {
+  color: #8793ac;
+}
+
+:root[data-theme="dark"] .zhida-footer-btn {
+  color: #bfc9dd;
+}
+
+:root[data-theme="dark"] .zhida-footer-btn:hover {
+  color: #8ca6fc;
+  background: rgba(110, 142, 251, 0.14);
+}
+
+/* --- Light mode overrides --- */
+:root[data-theme="light"] .zhida-global-footer {
+  background: #f8fafc;
+  border-top-color: #e2e8f0;
+}
+
+:root[data-theme="light"] .zhida-footer-brand-name {
+  color: #0f172a;
+}
+
+:root[data-theme="light"] .zhida-footer-brand-tag {
+  color: #64748b;
+}
+
+:root[data-theme="light"] .zhida-footer-copy {
+  color: #94a3b8;
+}
+
+:root[data-theme="light"] .zhida-footer-btn {
+  color: #334155;
+}
+
+:root[data-theme="light"] .zhida-footer-btn:hover {
+  color: #4c6ef5;
+  background: #e7ecfd;
+}
+
+/* ============================================================
+   LEGAL MODAL DIALOG
+   ============================================================ */
+
+.zhida-legal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(11, 15, 25, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.zhida-legal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.zhida-legal-box {
+  width: min(680px, 90vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised, #111827);
+  border: 1px solid var(--line-strong, #334155);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.zhida-legal-head {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line, #1e293b);
+}
+
+.zhida-legal-head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--ink, #f8fafc);
+}
+
+.zhida-legal-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--muted, #94a3b8);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.zhida-legal-close:hover {
+  color: var(--ink, #ffffff);
+}
+
+.zhida-legal-body {
+  padding: 24px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink-soft, #cbd5e1);
+}
+
+.zhida-legal-body h3 {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--ink, #f8fafc);
+  border-left: 3px solid var(--accent, #38bdf8);
+  padding-left: 8px;
+}
+
+.zhida-legal-body p {
+  margin-bottom: 12px;
+}
+
+.zhida-legal-foot {
+  padding: 14px 24px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--line, #1e293b);
+  background: var(--surface-soft, #1e293b);
+}
+
+.zhida-legal-confirm {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent, #0284c7);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.zhida-legal-confirm:hover {
+  background: var(--accent-hover, #0369a1);
+}
+
+/* Mobile legal modal */
+@media (max-width: 620px) {
+  .zhida-legal-box {
+    width: 94vw;
+    max-height: 88vh;
+    border-radius: 14px;
+  }
+  .zhida-legal-head {
+    padding: 14px 18px;
+  }
+  .zhida-legal-body {
+    padding: 18px;
+    font-size: 13px;
+  }
+  .zhida-legal-foot {
+    padding: 12px 18px;
+  }
+}
+
+/* ============================================================
+   THEME/LANGUAGE TOGGLE — Fix mobile overlap with login tabs
+   ============================================================ */
+
+/* Desktop: fixed top-right corner (already handled by .auth-corner-pref) */
+@media (max-width: 620px) {
+  .auth-corner-pref {
+    position: fixed !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 50 !important;
+    gap: 6px !important;
+    display: flex !important;
+    margin: 0 !important;
+  }
+  .auth-corner-pref .zhida-embedded-btn {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+  }
+  /* Push login content down so fixed toggles don't overlap */
+  .auth-view {
+    padding-top: 48px !important;
+  }
+}
+
+/* ============================================================
+   新 ui-prefs 分段控制条（SVG 图标 · 替代 emoji 按钮）
+   注入 [data-ui-preferences] 容器，深/浅两态自适应
+   ============================================================ */
+.ui-prefs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ui-prefs__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--accent-soft, rgba(110, 142, 251, 0.14));
+  border: 1px solid var(--line-2, #2f3b58);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.ui-prefs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 4px 12px;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: var(--ink-2, #bfc9dd);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ui-prefs-btn svg {
+  flex: 0 0 auto;
+}
+.ui-prefs-btn:hover {
+  color: var(--ink-1, #edf1fa);
+  background: rgba(110, 142, 251, 0.10);
+}
+.ui-prefs-btn.is-active {
+  color: #ffffff;
+  background: var(--accent-1, #6e8efb);
+  box-shadow: 0 3px 10px rgba(110, 142, 251, 0.30);
+}
+.ui-prefs-btn:focus-visible {
+  outline: 2px solid var(--accent-hover, #8ca6fc);
+  outline-offset: 2px;
+}
+.ui-prefs__lang .ui-prefs-btn {
+  min-width: 44px;
+  padding: 4px 8px;
+}
+.ui-prefs__lang .ui-prefs-btn.is-active {
+  background: var(--ink-1, #edf1fa);
+  color: var(--bg-page, #0a0e17);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+/* 移动端触控目标 ≥ 40px */
+@media (max-width: 620px) {
+  .ui-prefs-btn {
+    min-height: 40px;
+    padding: 4px 10px;
+  }
+  .ui-prefs {
+    gap: 4px;
+  }
+  .ui-prefs__group {
+    gap: 0;
+    padding: 2px;
+  }
+}
+
+/* --- 登录页右上角固定控件容器 --- */
+.ui-prefs-auth-corner {
+  position: fixed;
+  top: 22px;
+  right: 26px;
+  z-index: 50;
+}
+.ui-prefs-auth-corner .ui-prefs {
+  gap: 6px;
+}
+@media (max-width: 620px) {
+  .ui-prefs-auth-corner {
+    top: 12px;
+    right: 12px;
+  }
+  /* 登录卡下移避免被右上角控件遮挡 */
+  #auth-view {
+    padding-top: 48px;
+  }
+}
+
