@@ -43,3 +43,4 @@ android/local.properties
 *.bak.*
 *.upload.tmp
 server_radar_sources.py
+_prefs_backup_*/
