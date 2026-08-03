@@ -5,6 +5,7 @@ import android.os.Environment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.FormBody
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -942,8 +943,6 @@ private fun safeFilename(value: String): String {
 private fun absoluteUrl(value: String): String {
     if (value.isBlank()) return ""
     if (value.startsWith("http://") || value.startsWith("https://")) return value
-    val base = BuildConfig.API_BASE_URL
-    val marker = "/resume-ai/api/"
-    val origin = base.substringBefore(marker, base.trimEnd('/'))
-    return origin.trimEnd('/') + "/" + value.trimStart('/')
+    return BuildConfig.API_BASE_URL.toHttpUrl().resolve(value)?.toString()
+        ?: throw ApiException("Invalid server file URL")
 }

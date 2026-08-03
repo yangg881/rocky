@@ -1,6 +1,7 @@
 import asyncio
 import gzip
 import socket
+from io import BytesIO
 
 import httpx
 import pytest
@@ -13,11 +14,13 @@ from app.services import (
     JD_EMPTY_ERROR,
     RESUME_DESIGN_THEMES,
     _extract_gxrc_job,
+    extract_document_text,
     fallback_resume_design,
     normalize_resume_content,
     resolve_resume_design,
     validate_jd_result,
 )
+from docx import Document
 from app.storage import ObjectStore
 
 PUBLIC_TEST_IP = "93.184.216.34"
@@ -27,6 +30,19 @@ def test_colored_resume_themes_use_one_primary_color_family() -> None:
     for theme in RESUME_DESIGN_THEMES.values():
         if theme["colored"]:
             assert theme["ribbon"] == theme["primary"]
+
+
+def test_docx_text_extraction_ignores_duplicate_merged_cells() -> None:
+    document = Document()
+    table = document.add_table(rows=1, cols=2)
+    merged = table.cell(0, 0).merge(table.cell(0, 1))
+    merged.text = "2024.05-2026.01 Example Company Sales Manager"
+    output = BytesIO()
+    document.save(output)
+
+    text = extract_document_text("resume.docx", output.getvalue())
+
+    assert text.splitlines() == ["2024.05-2026.01 Example Company Sales Manager"]
 
 
 def test_work_experience_is_sorted_by_latest_end_date() -> None:

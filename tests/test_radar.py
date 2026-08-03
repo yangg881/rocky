@@ -77,6 +77,27 @@ def test_recommendation_batch_keeps_true_match_count_before_cap(tmp_path) -> Non
     assert len(result.jobs) == 2
 
 
+def test_keyword_search_matches_job_requirements_and_tags(tmp_path) -> None:
+    store = JobRadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    store.import_jobs([
+        {
+            "id": "requirements-match",
+            "title": "Client Success Manager",
+            "company": "Example Co",
+            "description": "Support enterprise customers.",
+            "requirements": ["Sales pipeline experience"],
+            "tags": ["account-sales"],
+            "source_url": "https://example.com/requirements-match",
+            "published_at": datetime.now(timezone.utc).isoformat(),
+        },
+    ])
+
+    result = asyncio.run(store.recommend("user-1", "customer", query="sales"))
+
+    assert [job["id"] for job in result.jobs] == ["requirements-match"]
+
+
 def test_recommendation_source_filter_uses_source_host(tmp_path) -> None:
     store = JobRadarStore(tmp_path / "radar.sqlite3")
     store.initialize()

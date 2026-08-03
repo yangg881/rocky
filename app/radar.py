@@ -713,9 +713,15 @@ CREATE TABLE IF NOT EXISTS semantic_match_cache (                    profile_has
             sql += " AND lower(j.location) LIKE ?"
             params.append(f"%{city}%")
         if query:
-            sql += " AND (lower(j.title) LIKE ? OR lower(j.company) LIKE ? OR lower(j.description) LIKE ?)"
+            sql += """
+                AND (
+                    lower(j.title) LIKE ? OR lower(j.company) LIKE ? OR lower(j.description) LIKE ?
+                    OR lower(j.tags) LIKE ? OR lower(j.requirements) LIKE ?
+                    OR lower(j.responsibilities) LIKE ? OR lower(j.benefits) LIKE ?
+                )
+            """
             like = f"%{query}%"
-            params.extend([like, like, like])
+            params.extend([like] * 7)
         if saved_only:
             sql += " AND f.action = 'saved'"
         sql += " ORDER BY COALESCE(NULLIF(j.published_at, ''), j.updated_at) DESC LIMIT 15000"

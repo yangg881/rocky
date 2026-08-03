@@ -1071,13 +1071,10 @@ async def radar_recommendations(
         source=source,
         only_new=only_new,
     )
+    # `recommend` already calculates deterministic per-profile scores. Running an
+    # additional AI call for every result made ordinary keyword searches wait for
+    # minutes and allowed old responses to overwrite newer searches on the app.
     jobs = recommendation.jobs
-    try:
-        profile = radar_profile_text(user, _resume_id_list or None)
-        if profile and jobs:
-            jobs = await radar.enrich_semantic_scores(ai, jobs, profile)
-    except Exception:
-        pass
     if min_score:
         jobs = [job for job in jobs if job.get("match_score", 0) >= min_score]
     total = len(jobs)
@@ -1176,7 +1173,12 @@ def radar_job_detail(job_id: str, user: Annotated[dict, Depends(current_user)]) 
             )
             if updated:
                 job = updated
-    radar.set_feedback(user["id"], job_id, "viewed")
+    try:
+        radar.set_feedback(user["id"], job_id, "viewed")
+    except LookupError:
+        # A source detail page may be temporarily unavailable. The detail we
+        # already loaded is still valid enough to return; viewing it must not 500.
+        pass
     audit("radar.detail_opened", user["id"], {"job_id": job_id, "detail_status": job.get("source_detail_status")})
     return job
 
@@ -1254,9 +1256,9 @@ def app_version(
     apk_path = STATIC_DIR / "downloads" / "zhiday-resume-android.apk"
     # Bump together with a newly published APK under static/downloads.
     # Keep this value in lockstep with android/app/build.gradle.kts and the APK below.
-    latest_code = 35
+    latest_code = 36
     minimum_code = 5
-    latest_name = "1.8.20"
+    latest_name = "1.8.21"
     # CRITICAL: many mobile carriers RST HTTPS to zhidajob.top, while HTTP to
     # the server IP works. Always advertise the HTTP/IP download first so old
     # and new clients can actually fetch the installer.
@@ -1285,6 +1287,7 @@ def app_version(
         "package_type": "full_installer",
         "size": apk_path.stat().st_size if apk_path.is_file() else None,
         "release_notes": [
+            "修复原文件预览、简历读取重复、岗位详情匹配归零与岗位关键词搜索失败",
             "【安全升级】改用正式发布证书签名，修复旧版调试证书带来的升级劫持风险；若安装提示“应用未安装/签名冲突”，请先卸载旧版再安装本版",
             "应用内更新增加安装包签名指纹校验，杜绝被下发伪造安装包",
             "修复岗位来源筛选：Android 应用与网页端现在都会正确按来源刷新岗位列表",
@@ -1721,16 +1724,10 @@ async def upload_resume(file: UploadFile = File(...), user: dict = Depends(curre
         raise HTTPException(status_code=422, detail="文件中未提取到可用文字，可改用截图 OCR")
     try:
         # Cap wait so mobile/web clients do not sit on a spinner until nginx/proxy times out.
-        structured = await asyncio.wait_for(ai.structure_resume(text), timeout=50)
-        content = normalize_resume_content(structured)
-        # If the model returned an almost empty shell, enrich from local heuristics.
-        if not any(content.get(key) for key in ("experience", "projects", "education", "skills")):
-            heuristic = _fallback_resume_from_text(text, filename)
-            for key in ("experience", "projects", "education", "skills", "contact"):
-                if not content.get(key) and heuristic.get(key):
-                    content[key] = heuristic[key]
-            if not content.get("name") or content.get("name") in {"未命名简历", Path(filename).stem}:
-                content["name"] = heuristic.get("name") or content.get("name")
+        structured = await asyncio.wait_for(ai.structure_resume(text), timeout=25)
+        # Keep useful AI wording, but fill every missing section from the locally
+        # extracted document instead of accepting an incomplete AI response.
+        content = normalize_resume_content(structured, _fallback_resume_from_text(text, filename))
     except (AIServiceError, asyncio.TimeoutError, TimeoutError) as exc:
         # Prefer a usable draft over hard-failing the whole upload on model limits/timeouts.
         content = normalize_resume_content(_fallback_resume_from_text(text, filename))
@@ -3035,7 +3032,7 @@ def download_android_app() -> FileResponse:
     return FileResponse(
         apk_path,
         media_type="application/vnd.android.package-archive",
-        filename="zhiday-resume-android-full-1.8.18.apk",
+        filename="zhiday-resume-android-full-1.8.21.apk",
         headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0", "Pragma": "no-cache", "X-Content-Type-Options": "nosniff"},
     )
 
@@ -3066,7 +3063,7 @@ def download_android_app_update() -> FileResponse:
     return FileResponse(
         apk_path,
         media_type="application/vnd.android.package-archive",
-        filename="zhiday-resume-android-full-1.8.18.apk",
+        filename="zhiday-resume-android-full-1.8.21.apk",
         headers={
             "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
             "Pragma": "no-cache",

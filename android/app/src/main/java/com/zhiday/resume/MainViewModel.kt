@@ -84,6 +84,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val prefs = app.getSharedPreferences("zhiday_resume", Context.MODE_PRIVATE)
     private var pollJob: Job? = null
     private var updatePollJob: Job? = null
+    private var radarRequestVersion = 0
     private val _state = MutableStateFlow(UiState(tokenReady = api.token != null))
     val state: StateFlow<UiState> = _state
 
@@ -281,6 +282,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun loadRadar(page: Int? = null) = launch(null) {
         val current = _state.value
+        val requestVersion = ++radarRequestVersion
         val result = api.radarRecommendations(
             query = current.radarQuery,
             city = current.radarCity,
@@ -294,8 +296,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             topic = current.radarTopic,
             source = current.radarSource,
         )
-        _state.update {
-            it.copy(
+        _state.update { state ->
+            if (requestVersion != radarRequestVersion) state
+            else state.copy(
                 radarJobs = result.jobs,
                 radarSummary = result.summary,
                 radarCities = result.cities,
@@ -368,9 +371,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(radarJobDetailLoadingId = job.id) }
         try {
             val detail = api.radarJobDetail(job.id)
+            // Recommendation scores belong to the selected resume/profile and are only
+            // present in the list response. Keep them when enriching a job detail.
+            val detailWithMatch = detail.copy(
+                matchScore = job.matchScore,
+                matchReason = job.matchReason,
+                feedbackAction = job.feedbackAction,
+                adapted = job.adapted,
+                adaptedAt = job.adaptedAt,
+            )
             _state.update { state ->
                 state.copy(
-                    radarJobDetails = state.radarJobDetails + (job.id to detail),
+                    radarJobDetails = state.radarJobDetails + (job.id to detailWithMatch),
                     radarJobDetailLoadingId = null,
                 )
             }

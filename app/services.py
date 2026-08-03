@@ -45,11 +45,18 @@ def extract_document_text(filename: str, data: bytes) -> str:
         # old implementation read only top-level paragraphs and treated those
         # files as blank.
         parts = [paragraph.text for paragraph in document.paragraphs]
+        seen_cells: set[int] = set()
         for table in document.tables:
             for row in table.rows:
                 for cell in row.cells:
+                    # python-docx exposes the same merged cell once per grid column.
+                    # Reading it repeatedly produces duplicated jobs in parsed resumes.
+                    cell_id = id(cell._tc)
+                    if cell_id in seen_cells:
+                        continue
+                    seen_cells.add(cell_id)
                     parts.extend(paragraph.text for paragraph in cell.paragraphs)
-        extracted = "\n".join(part.strip() for part in parts if part and part.strip()).strip()
+        extracted = "\n".join(dict.fromkeys(part.strip() for part in parts if part and part.strip())).strip()
         return extracted or _extract_docx_xml_text(data)
     if suffix in {"txt", "md"}:
         return data.decode("utf-8", errors="replace").strip()
